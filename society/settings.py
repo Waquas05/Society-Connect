@@ -137,5 +137,9 @@ LOGOUT_REDIRECT_URL = '/login/'
 
 #AI chatbot
 
+from dotenv import load_dotenv
+load_dotenv()
+
 import os
-GEMINI_API_KEY='AIzaSyAlA8Mrebe3cbzV1S6glmu9Zw9dqKAMKH8'
+GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
+

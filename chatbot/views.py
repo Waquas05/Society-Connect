@@ -67,6 +67,7 @@ def chatbot_response(request):
         response = model.generate_content(prompt)
         bot_reply = response.text
     except Exception as e:
+        print("Chatbot Error:", str(e))
         bot_reply = "Sorry, I couldn’t process your request right now."
 
     # Save the new conversation turn to session
