@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Societies - Society Connect</title>
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #4c1d95 0%, #7c2d12 100%);
+            min-height: 100vh;
+        }
+
+        .hero-bg {
+            background: linear-gradient(135deg, rgba(76, 29, 149, 0.9) 0%, rgba(124, 45, 18, 0.9) 100%),
+                url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="30" cy="30" r="1.5" fill="white" opacity="0.1"/><circle cx="70" cy="60" r="1" fill="white" opacity="0.1"/><circle cx="50" cy="80" r="1.5" fill="white" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+        }
+
+        .card-hover {
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transform: translateZ(0);
+        }
+
+        .card-hover:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        }
+
+        .society-card {
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(20px);
+            background: rgba(255, 255, 255, 0.95);
+        }
+
+        .society-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #4c1d95, #7c2d12, #dc2626, #ea580c, #d97706);
+            background-size: 200% 100%;
+            animation: gradient 3s ease infinite;
+        }
+
+        @keyframes gradient {
+
+            0%,
+            100% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+        }
+
+        .featured-badge {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background: linear-gradient(45deg, #dc2626, #b91c1c);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            box-shadow: 0 4px 15px rgba(220, 38, 38, 0.4);
+            animation: pulse 2s infinite;
+            z-index: 10;
+        }
+
+        .active-badge {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background: linear-gradient(45deg, #059669, #047857);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            box-shadow: 0 4px 15px rgba(5, 150, 105, 0.5);
+            z-index: 10;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.05);
+            }
+        }
+
+        .floating-elements {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        .floating-elements::before,
+        .floating-elements::after {
+            content: '';
+            position: absolute;
+            width: 250px;
+            height: 250px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.08);
+            animation: float 25s infinite linear;
+        }
+
+        .floating-elements::before {
+            top: -125px;
+            left: -125px;
+            animation-delay: 0s;
+        }
+
+        .floating-elements::after {
+            bottom: -125px;
+            right: -125px;
+            animation-delay: -12s;
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0px) rotate(0deg);
+            }
+
+            33% {
+                transform: translateY(-20px) rotate(120deg);
+            }
+
+            66% {
+                transform: translateY(20px) rotate(240deg);
+            }
+        }
+
+        .search-glow:focus {
+            box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.3), 0 0 20px rgba(255, 255, 255, 0.2);
+        }
+
+        .member-count {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            background: rgba(76, 29, 149, 0.1);
+            color: #4c1d95;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        header {
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+    </style>
+</head>
+
+<body class="text-gray-800">
+    <!-- Header Section -->
+    <header class="bg-white/10 backdrop-blur-lg fixed top-0 left-0 right-0 z-50 border-b border-white/20">
+        <div class="container mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <a href="{% url 'home' %}" class="text-2xl font-bold text-white">Society Connect</a>
+
+                <nav class="hidden md:flex items-center space-x-8">
+                    <a href="{% url 'home' %}" class="text-white/80 hover:text-white transition">Home</a>
+                    <a href="{% url 'society_list' %}" class="text-white font-semibold">Societies</a>
+                    <a href="{% url 'events_list' %}" class="text-white/80 hover:text-white transition">Events</a>
+                    <a href="{% url 'about' %}" class="text-white/80 hover:text-white transition">About</a>
+                </nav>
+
+                {% if user.is_authenticated %}
+                <div class="relative hidden md:block">
+                    <button id="profile-menu-button" class="flex items-center space-x-2 focus:outline-none">
+                        {% if user.profile.photo %}
+                            <img class="w-10 h-10 rounded-full object-cover border-2 border-white" src="{{ user.profile.photo.url }}" alt="Your Photo">
+                        {% else %}
+                            <span class="inline-block h-10 w-10 overflow-hidden rounded-full bg-white/20">
+                              <svg class="h-full w-full text-white" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z" />
+                              </svg>
+                            </span>
+                        {% endif %}
+                        <span class="font-semibold text-white">Hi, {{ user.username }}</span>
+                        <svg class="w-4 h-4 text-white/80" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </button>
+
+                    <div id="profile-menu" class="hidden absolute right-0 mt-2 w-48 bg-white rounded-md shadow-xl z-20">
+                        <a href="{% url 'profile' %}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-indigo-500 hover:text-white">My Profile</a>
+                        <a href="{% url 'logout' %}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-indigo-500 hover:text-white">Logout</a>
+                    </div>
+                </div>
+                {% else %}
+                <a href="{% url 'login' %}"
+                    class="hidden md:inline-block bg-white text-purple-600 font-semibold px-6 py-2 rounded-full hover:bg-gray-100 transition shadow-lg">
+                    Login / Register
+                </a>
+                {% endif %}
+
+                <button id="mobile-menu-button" class="md:hidden text-white">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M4 6h16M4 12h16m-7 6h7"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        
+        <div id="mobile-menu" class="hidden md:hidden px-6 pb-4">
+            <a href="{% url 'home' %}" class="block py-2 text-white/80 hover:text-white">Home</a>
+            <a href="{% url 'society_list' %}" class="block py-2 text-white font-semibold">Societies</a>
+            <a href="{% url 'events_list' %}" class="block py-2 text-white/80 hover:text-white transition">Events</a>
+            <a href="{% url 'about' %}" class="block py-2 text-white/80 hover:text-white">About</a>
+            <hr class="my-2 border-white/20">
+            {% if user.is_authenticated %}
+                <a href="{% url 'profile' %}" class="block py-2 font-semibold text-white">My Profile</a>
+                <a href="{% url 'logout' %}"
+                    class="block w-full mt-2 bg-red-600 text-white text-center font-semibold px-5 py-2 rounded-lg hover:bg-red-700 shadow">Logout</a>
+            {% else %}
+                <a href="{% url 'login' %}"
+                    class="block w-full mt-2 bg-white text-purple-600 text-center font-semibold px-5 py-2 rounded-lg hover:bg-gray-100 shadow">Login / Register</a>
+            {% endif %}
+        </div>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <section class="hero-bg text-white pt-32 pb-20 md:pt-40 md:pb-24 relative overflow-hidden">
+            <div class="floating-elements"></div>
+            <div class="container mx-auto px-6 text-center relative z-10">
+                <h1
+                    class="text-5xl md:text-7xl font-extrabold leading-tight mb-6 bg-gradient-to-r from-white to-orange-200 bg-clip-text text-transparent">
+                    Discover All Societies
+                </h1>
+                <p class="text-xl md:text-2xl text-white/90 mb-12 max-w-4xl mx-auto leading-relaxed">
+                    Connect with diverse communities and find your passion across campus
+                </p>
+
+                <!-- Search and Filter Bar -->
+                <div class="max-w-5xl mx-auto">
+                    <div class="flex flex-col sm:flex-row gap-6">
+                        <div class="relative flex-1">
+                            <input type="search" id="searchInput"
+                                placeholder="Search societies, categories, interests..."
+                                class="w-full p-5 pl-6 pr-14 text-gray-800 rounded-2xl shadow-2xl focus:outline-none search-glow bg-white/95 backdrop-blur-sm text-lg font-medium">
+                            <button
+                                class="absolute top-1/2 right-4 -translate-y-1/2 bg-gradient-to-r from-purple-800 to-orange-700 text-white p-3 rounded-xl hover:from-purple-900 hover:to-orange-800 transition-all duration-300 shadow-lg">
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                                </svg>
+                            </button>
+                        </div>
+
+                        <div class="relative">
+                            <select id="societyFilter"
+                                class="appearance-none bg-white/95 backdrop-blur-sm text-gray-800 px-8 py-5 pr-12 rounded-2xl shadow-2xl focus:outline-none search-glow font-semibold min-w-[220px] text-lg">
+                                <option value="all">All Societies</option>
+                                {% for society in societies %}
+                                    <option value="{{ society.slug }}">{{ society.name }}</option>
+                                {% endfor %}
+                            </select>
+                            <div class="absolute inset-y-0 right-0 flex items-center pr-6 pointer-events-none">
+                                <svg class="w-6 h-6 text-gray-600" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M19 9l-7 7-7-7"></path>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Societies Grid -->
+        <div class="py-20 relative">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-16">
+                    <h2 class="text-4xl md:text-5xl font-bold mb-6 text-white">All Societies</h2>
+                    <p class="text-white/80 max-w-3xl mx-auto text-xl">Explore diverse communities and find your perfect
+                        match</p>
+                </div>
+
+                <div id="societiesContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    {% for society in societies %}
+                    <div data-society="{{ society.slug }}"
+                        class="society-card rounded-2xl shadow-2xl card-hover border border-white/20">
+                        {% if society.is_featured %}
+                        <div class="featured-badge">⭐ Featured</div>
+                        {% elif society.is_most_active %}
+                        <div class="active-badge">🔥 Most Active</div>
+                        {% endif %}
+                        <div class="p-6">
+                            <div class="flex items-start justify-between mb-5">
+                                <div class="flex-1 pr-4">
+                                    <div class="flex items-center gap-3 mb-3">
+                                        <div class="w-12 h-12 bg-gradient-to-br from-indigo-500 to-purple-600 rounded-full shadow-md flex items-center justify-center">
+                                            {% if society.logo %}
+                                                <img src="{{ society.logo.url }}" alt="{{ society.name }}" class="w-10 h-10 rounded-full object-cover">
+                                            {% else %}
+                                                <span class="text-white font-bold text-lg">{{ society.name.0 }}</span>
+                                            {% endif %}
+                                        </div>
+                                        <div>
+                                            <h3 class="text-xl font-bold text-gray-900 leading-tight">{{ society.name }}</h3>
+                                            <span class="text-xs px-3 py-1 bg-indigo-100 text-indigo-700 rounded-full font-semibold">
+                                                {{ society.category|default:"General" }}
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <p class="text-gray-600 text-sm mb-4 leading-relaxed">
+                                        {{ society.description|truncatewords:25 }}
+                                    </p>
+
+                                    <div class="space-y-2 text-sm text-gray-500">
+                                        <div class="flex items-center gap-3">
+                                            <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor"
+                                                viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z">
+                                                </path>
+                                            </svg>
+                                            <span class="member-count">{{ society.member_count|default:"0" }}+ Members</span>
+                                        </div>
+                                        <div class="flex items-center gap-3">
+                                            <svg class="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor"
+                                                viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                            </svg>
+                                            <span>Est. {{ society.established_year|default:"2022" }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="flex-shrink-0">
+                                    <div class="bg-gradient-to-br from-indigo-50 to-purple-50 rounded-xl p-3 w-16 text-center shadow-inner">
+                                        <p class="text-xs font-semibold text-gray-600 uppercase tracking-wide">
+                                            {% if society.is_active %}Active{% else %}Inactive{% endif %}
+                                        </p>
+                                        <p class="text-2xl font-bold text-indigo-600">
+                                            {% if society.is_active %}✓{% else %}⏸{% endif %}
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="flex items-center justify-between pt-4 border-t border-gray-200">
+                                <div class="flex items-center gap-2 flex-wrap">
+                                    {% if society.is_open_for_all %}
+                                    <span class="bg-green-100 text-green-700 text-xs px-3 py-1 rounded-full font-semibold">Open for All</span>
+                                    {% endif %}
+                                    {% if society.has_premium_activities %}
+                                    <span class="text-xs text-red-600 font-semibold">Premium Activities</span>
+                                    {% endif %}
+                                </div>
+                                <div class="flex gap-2">
+                                    <a href="{% url 'society_detail' society.slug %}"
+                                        class="px-3 py-1 text-sm text-purple-600 hover:bg-purple-50 rounded-lg transition duration-300 font-semibold">Learn More</a>
+                                    {% if society.allow_join %}
+                                    <a href="{% url 'society_join' society.slug %}"
+                                        class="px-3 py-1 text-sm bg-gradient-to-r from-purple-800 to-orange-700 text-white rounded-lg hover:from-purple-900 hover:to-orange-800 transition duration-300 font-semibold shadow-lg">Join Now</a>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% empty %}
+                    <div class="col-span-full text-center text-white/80 py-16">
+                        <svg class="w-16 h-16 mx-auto mb-4 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M9.172 16.172a4 4 0 015.656 0M9 12h6m-6-4h6m2 5.291A7.962 7.962 0 0112 15c-2.34 0-4.462.598-6.346 1.613C3.64 17.378 2 19.189 2 21h20c0-1.811-1.64-3.622-3.654-4.387A7.962 7.962 0 0112 15z"></path>
+                        </svg>
+                        <h3 class="text-xl font-semibold mb-2">No Societies Found</h3>
+                        <p>Try adjusting your search filters or check back later for new societies.</p>
+                    </div>
+                    {% endfor %}
+                </div>
+
+                <!-- Pagination Section -->
+                {% if societies.has_other_pages %}
+                <div class="mt-16 flex flex-col items-center space-y-6">
+                    <div class="flex justify-center items-center space-x-2">
+                        {% if societies.has_previous %}
+                        <a href="?page={{ societies.previous_page_number }}"
+                            class="p-2 text-white hover:text-indigo-300 rounded-lg transition duration-200">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M15 19l-7-7 7-7"></path>
+                            </svg>
+                        </a>
+                        {% else %}
+                        <button
+                            class="p-2 text-gray-400 rounded-lg transition duration-200 disabled:opacity-50"
+                            disabled>
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M15 19l-7-7 7-7"></path>
+                            </svg>
+                        </button>
+                        {% endif %}
+
+                        {% for page_num in societies.paginator.page_range %}
+                            {% if page_num == societies.number %}
+                                <button class="w-10 h-10 bg-indigo-600 text-white rounded-lg font-semibold shadow-md">{{ page_num }}</button>
+                            {% elif page_num > societies.number|add:'-3' and page_num < societies.number|add:'3' %}
+                                <a href="?page={{ page_num }}"
+                                    class="w-10 h-10 text-indigo-300 hover:bg-indigo-50/10 rounded-lg transition duration-200 font-semibold flex items-center justify-center">{{ page_num }}</a>
+                            {% elif page_num == societies.number|add:'-3' or page_num == societies.number|add:'3' %}
+                                <span class="px-2 text-white/70">...</span>
+                            {% endif %}
+                        {% endfor %}
+
+                        {% if societies.has_next %}
+                        <a href="?page={{ societies.next_page_number }}"
+                            class="p-2 text-white hover:text-indigo-300 rounded-lg transition duration-200">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7">
+                                </path>
+                            </svg>
+                        </a>
+                        {% else %}
+                        <button
+                            class="p-2 text-gray-400 rounded-lg transition duration-200 disabled:opacity-50"
+                            disabled>
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7">
+                                </path>
+                            </svg>
+                        </button>
+                        {% endif %}
+                    </div>
+
+                    <!-- Results Info -->
+                    <div class="text-center text-white/80">
+                        <p>Showing <span id="resultsCount">{{ societies|length }}</span> of {{ societies.paginator.count }} societies</p>
+                    </div>
+                </div>
+                {% endif %}
+
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer Section -->
+    <footer class="bg-black/20 backdrop-blur-lg text-white border-t border-white/10">
+        <div class="container mx-auto px-6 py-16">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-12">
+                <!-- Logo + Social -->
+                <div>
+                    <div class="mb-6">
+                        <div
+                            class="w-16 h-16 rounded-full bg-gradient-to-r from-purple-800 to-orange-700 flex items-center justify-center shadow-2xl">
+                            <span class="text-white font-bold text-xl">SC</span>
+                        </div>
+                    </div>
+                    <p class="text-white/70 mb-6">Connect with our vibrant community</p>
+
+                    <!-- Social Icons -->
+                    <div class="flex space-x-6">
+                        <a href="#"
+                            class="hover:text-purple-300 w-10 h-10 flex items-center justify-center bg-white/10 rounded-full backdrop-blur-sm transition duration-300 hover:bg-white/20">
+                            <svg fill="currentColor" viewBox="0 0 24 24" width="20" height="20">
+                                <path
+                                    d="M7 2C4.238 2 2 4.238 2 7v10c0 2.762 2.238 5 5 5h10c2.762 0 5-2.238 5-5V7c0-2.762-2.238-5-5-5H7zm10 2c1.654 0 3 1.346 3 3v10c0 1.654-1.346 3-3 3H7c-1.654 0-3-1.346-3-3V7c0-1.654 1.346-3 3-3h10zm-5 3a5 5 0 1 0 0 10 5 5 0 0 0 0-10zm0 2a3 3 0 1 1 .001 6.001A3 3 0 0 1 12 9zm5-1.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z" />
+                            </svg>
+                        </a>
+                        <a href="#"
+                            class="hover:text-purple-300 w-10 h-10 flex items-center justify-center bg-white/10 rounded-full backdrop-blur-sm transition duration-300 hover:bg-white/20">
+                            <svg fill="currentColor" viewBox="0 0 24 24" width="20" height="20">
+                                <path
+                                    d="M23.498 6.186a2.926 2.926 0 0 0-2.057-2.063C19.221 3.667 12.002 3.667 12.002 3.667c0 0-7.219 0-9.439.456A2.926 2.926 0 0 0 .506 6.186C.051 8.406.051 12.003.051 12.003s0 3.597.455 5.817a2.926 2.926 0 0 0 2.057 2.063c2.22.455 9.439.455 9.439.455s7.219 0 9.439-.455a2.926 2.926 0 0 0 2.057-2.063c.455-2.22.455-5.817.455-5.817s0-3.597-.455-5.817zM9.969 15.09V8.915l6.243 3.088-6.243 3.087z" />
+                            </svg>
+                        </a>
+                        <a href="#"
+                            class="hover:text-purple-300 w-10 h-10 flex items-center justify-center bg-white/10 rounded-full backdrop-blur-sm transition duration-300 hover:bg-white/20">
+                            <svg fill="currentColor" viewBox="0 0 24 24" width="20" height="20">
+                                <path
+                                    d="M22.162 5.656c-.793.352-1.631.588-2.527.695a4.343 4.343 0 0 0 1.889-2.393 8.48 8.48 0 0 1-2.73 1.043 4.296 4.296 0 0 0-7.32 3.919A12.202 12.202 0 0 1 3.113 4.92a4.297 4.297 0 0 0 1.331 5.733c-.646-.021-1.254-.199-1.786-.495v.05c0 2.084 1.486 3.822 3.454 4.217-.362.099-.743.151-1.138.151-.278 0-.547-.027-.81-.077.548 1.71 2.139 2.957 4.022 2.989a8.616 8.616 0 0 1-5.338 1.84c-.347 0-.692-.02-1.03-.06a12.21 12.21 0 0 0 6.576 1.927c7.89 0 12.214-6.54 12.214-12.214 0-.186-.004-.37-.012-.553a8.753 8.753 0 0 0 2.154-2.236z" />
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Quick Links -->
+                <div>
+                    <h3 class="text-lg font-semibold mb-6 text-white">Quick Links</h3>
+                    <ul class="space-y-4">
+                        <li><a href="{% url 'home' %}" class="text-white/70 hover:text-white transition duration-300">Home</a></li>
+                        <li><a href="{% url 'society_list' %}" class="text-white/70 hover:text-white transition duration-300">All Societies</a>
+                        </li>
+                        <li><a href="{% url 'events_list' %}" class="text-white/70 hover:text-white transition duration-300">Events
+                                Calendar</a></li>
+                        <li><a href="{% url 'about' %}" class="text-white/70 hover:text-white transition duration-300">About Us</a></li>
+                    </ul>
+                </div>
+
+                <!-- Categories -->
+                <div>
+                    <h3 class="text-lg font-semibold mb-6 text-white">Society Categories</h3>
+                    <ul class="space-y-4">
+                        <li><a href="#" class="text-white/70 hover:text-white transition duration-300">Technical
+                                Societies</a></li>
+                        <li><a href="#" class="text-white/70 hover:text-white transition duration-300">Cultural
+                                Groups</a></li>
+                        <li><a href="#" class="text-white/70 hover:text-white transition duration-300">Service
+                                Organizations</a></li>
+                        <li><a href="#" class="text-white/70 hover:text-white transition duration-300">Sports &
+                                Gaming</a></li>
+                    </ul>
+                </div>
+
+                <!-- Contact Info -->
+                <div>
+                    <h3 class="text-lg font-semibold mb-6 text-white">Get In Touch</h3>
+                    <div class="space-y-4 text-white/70">
+                        <div>
+                            <p class="font-semibold text-white">+91 XXXXXXXXXX</p>
+                            <p class="text-sm">Mon - Fri: 9am - 6pm</p>
+                        </div>
+                        <p>societyconnect@college.edu</p>
+                        <p>ARSD College Campus,<br>New Delhi, 110021</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bottom Line -->
+        <div class="border-t border-white/10">
+            <div class="container mx-auto px-6 py-6 text-center">
+                <p class="text-white/70">
+                    &copy; 2025 Society Connect. All Rights Reserved.
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript for interactions -->
+    <script>
+        // Header scroll effect
+        const header = document.querySelector('header');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 10) {
+                header.classList.add('bg-white/20');
+                header.classList.remove('bg-white/10');
+            } else {
+                header.classList.add('bg-white/10');
+                header.classList.remove('bg-white/20');
+            }
+        });
+
+        // Mobile menu functionality
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Profile menu functionality
+        const profileMenuButton = document.getElementById('profile-menu-button');
+        const profileMenu = document.getElementById('profile-menu');
+        if (profileMenuButton) {
+            profileMenuButton.addEventListener('click', () => {
+                profileMenu.classList.toggle('hidden');
+            });
+            window.addEventListener('click', (event) => {
+                if (!profileMenuButton.contains(event.target) && !profileMenu.contains(event.target)) {
+                    profileMenu.classList.add('hidden');
+                }
+            });
+        }
+
+        // Search and filter functionality
+        const searchInput = document.getElementById('searchInput');
+        const societyFilter = document.getElementById('societyFilter');
+        const societyCards = document.querySelectorAll('.society-card');
+        const resultsCount = document.getElementById('resultsCount');
+
+        function filterSocieties() {
+            const searchTerm = searchInput.value.toLowerCase();
+            const selectedFilter = societyFilter.value;
+            let visibleCount = 0;
+
+            societyCards.forEach(card => {
+                const societyType = card.getAttribute('data-society');
+                const societyName = card.querySelector('h3').textContent.toLowerCase();
+                const societyDescription = card.querySelector('p').textContent.toLowerCase();
+                const category = card.querySelector('.text-xs.px-3.py-1').textContent.toLowerCase();
+
+                let matchesSearch = searchTerm === '' ||
+                    societyName.includes(searchTerm) ||
+                    societyDescription.includes(searchTerm) ||
+                    category.includes(searchTerm);
+
+                let matchesFilter = selectedFilter === 'all' || societyType === selectedFilter;
+
+                if (matchesSearch && matchesFilter) {
+                    card.style.display = 'block';
+                    card.style.animation = 'fadeIn 0.5s ease-in';
+                    visibleCount++;
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+
+            if (resultsCount) {
+                resultsCount.textContent = visibleCount;
+            }
+        }
+
+        // Event listeners
+        if (searchInput) {
+            searchInput.addEventListener('input', filterSocieties);
+        }
+        if (societyFilter) {
+            societyFilter.addEventListener('change', filterSocieties);
+        }
+
+        // Card hover effects
+        societyCards.forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                card.style.transform = 'translateY(-8px) scale(1.02)';
+            });
+
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'translateY(0) scale(1)';
+            });
+        });
+
+        // Add fade-in animation
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes fadeIn {
+                from { opacity: 0; transform: translateY(20px); }
+                to { opacity: 1; transform: translateY(0); }
+            }
+            
+            .society-card {
+                animation: fadeIn 0.6s ease-out;
+            }
+        `;
+        document.head.appendChild(style);
+
+        // Stagger animation for cards on load
+        societyCards.forEach((card, index) => {
+            card.style.animationDelay = `${index * 0.1}s`;
+        });
+
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>

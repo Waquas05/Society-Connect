@@ -1,0 +1,1068 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Society Connect - Connect, Explore, Thrive</title>
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+            min-height: 100vh;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(120, 119, 198, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(138, 43, 226, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 40% 80%, rgba(72, 61, 139, 0.1) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .hero-bg {
+            background: 
+                linear-gradient(135deg, rgba(15, 12, 41, 0.95) 0%, rgba(48, 43, 99, 0.9) 50%, rgba(36, 36, 62, 0.95) 100%),
+                url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="dots" width="20" height="20" patternUnits="userSpaceOnUse"><circle cx="10" cy="10" r="1.5" fill="white" opacity="0.15"/><circle cx="5" cy="5" r="1" fill="white" opacity="0.1"/><circle cx="15" cy="15" r="1.2" fill="white" opacity="0.12"/></pattern></defs><rect width="100" height="100" fill="url(%23dots)"/></svg>');
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-bg::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: 
+                radial-gradient(circle, rgba(138, 43, 226, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(72, 61, 139, 0.15) 0%, transparent 50%);
+            animation: gradientShift 15s ease infinite;
+            z-index: 1;
+        }
+
+        .hero-bg > * {
+            position: relative;
+            z-index: 2;
+        }
+
+        @keyframes gradientShift {
+            0%, 100% {
+                transform: translate(0, 0) rotate(0deg);
+            }
+            33% {
+                transform: translate(5%, 5%) rotate(120deg);
+            }
+            66% {
+                transform: translate(-5%, 5%) rotate(240deg);
+            }
+        }
+
+        .card-hover {
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transform: translateZ(0);
+        }
+
+        .card-hover:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        }
+
+        .featured-card {
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(20px);
+            background: rgba(255, 255, 255, 0.95);
+        }
+
+        .featured-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #667eea, #764ba2, #8e44ad, #9b59b6, #667eea);
+            background-size: 200% 100%;
+            animation: gradient 3s ease infinite;
+        }
+
+        .event-card {
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(15px);
+            background: rgba(255, 255, 255, 0.9);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .recruitment-card {
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(15px);
+            background: rgba(255, 255, 255, 0.9);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        @keyframes gradient {
+            0%, 100% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+        }
+
+        .floating-orbs {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        .floating-orbs::before,
+        .floating-orbs::after {
+            content: '';
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(138, 43, 226, 0.2);
+            animation: float 20s infinite ease-in-out;
+            filter: blur(40px);
+        }
+
+        .floating-orbs::before {
+            width: 400px;
+            height: 400px;
+            top: -200px;
+            left: -100px;
+            animation-delay: 0s;
+            background: radial-gradient(circle, rgba(138, 43, 226, 0.3) 0%, transparent 70%);
+        }
+
+        .floating-orbs::after {
+            width: 300px;
+            height: 300px;
+            bottom: -150px;
+            right: -100px;
+            animation-delay: -10s;
+            background: radial-gradient(circle, rgba(72, 61, 139, 0.3) 0%, transparent 70%);
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0px) rotate(0deg);
+                opacity: 0.7;
+            }
+            33% {
+                transform: translateY(-40px) rotate(120deg);
+                opacity: 1;
+            }
+            66% {
+                transform: translateY(20px) rotate(240deg);
+                opacity: 0.5;
+            }
+        }
+
+        .search-glow:focus {
+            box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.3), 0 0 30px rgba(255, 255, 255, 0.2);
+        }
+
+        .pulse-glow {
+            animation: pulseGlow 3s infinite;
+        }
+
+        @keyframes pulseGlow {
+            0%, 100% {
+                box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+            }
+            50% {
+                box-shadow: 0 0 30px rgba(255, 255, 255, 0.5), 0 0 40px rgba(255, 255, 255, 0.3);
+            }
+        }
+
+        .featured-badge {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background: linear-gradient(45deg, #8e44ad, #9b59b6);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            box-shadow: 0 4px 15px rgba(142, 68, 173, 0.4);
+            animation: pulse 2s infinite;
+            z-index: 10;
+        }
+
+        .trending-badge {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background: linear-gradient(45deg, #f59e0b, #d97706);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            box-shadow: 0 4px 15px rgba(245, 158, 11, 0.5);
+            z-index: 10;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.05);
+            }
+        }
+
+        .hero-stats {
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 2rem;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 1rem;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 1rem;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .parallax-bg {
+            background-attachment: fixed;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-size: cover;
+        }
+
+        header {
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* AI Chatbot Floating Button Styles */
+        .chatbot-float {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 1000;
+            transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+        }
+
+        .chatbot-button {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            box-shadow: 0 8px 30px rgba(102, 126, 234, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: visible;
+        }
+
+        .chatbot-button:hover {
+            transform: scale(1.1) rotate(5deg);
+            box-shadow: 0 12px 40px rgba(102, 126, 234, 0.6);
+        }
+
+        .chatbot-button:active {
+            transform: scale(0.95);
+        }
+
+        /* Robot SVG Animation */
+        .robot-icon {
+            width: 40px;
+            height: 40px;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
+        }
+
+        .robot-wave {
+            animation: wave 1.5s ease-in-out infinite;
+            transform-origin: 70% 70%;
+        }
+
+        @keyframes wave {
+            0%, 100% {
+                transform: rotate(0deg);
+            }
+            10%, 30% {
+                transform: rotate(14deg);
+            }
+            20%, 40% {
+                transform: rotate(-8deg);
+            }
+            50% {
+                transform: rotate(14deg);
+            }
+            60% {
+                transform: rotate(0deg);
+            }
+        }
+
+        /* Pulse ring effect */
+        .chatbot-button::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            opacity: 0.4;
+            animation: pulse-ring 2s infinite;
+        }
+
+        @keyframes pulse-ring {
+            0% {
+                transform: scale(1);
+                opacity: 0.4;
+            }
+            50% {
+                transform: scale(1.3);
+                opacity: 0;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 0;
+            }
+        }
+
+        /* Tooltip */
+        .chatbot-tooltip {
+            position: absolute;
+            right: 85px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: white;
+            color: #667eea;
+            padding: 10px 16px;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 14px;
+            white-space: nowrap;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.3s ease;
+        }
+
+        .chatbot-tooltip::after {
+            content: '';
+            position: absolute;
+            right: -8px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 0;
+            height: 0;
+            border-left: 8px solid white;
+            border-top: 8px solid transparent;
+            border-bottom: 8px solid transparent;
+        }
+
+        .chatbot-float:hover .chatbot-tooltip {
+            opacity: 1;
+            right: 90px;
+        }
+
+        /* Notification badge */
+        .chatbot-badge {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            width: 20px;
+            height: 20px;
+            background: #ef4444;
+            border-radius: 50%;
+            border: 2px solid white;
+            animation: badge-pulse 2s infinite;
+        }
+
+        @keyframes badge-pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.2);
+            }
+        }
+
+        /* Mobile responsive */
+        @media (max-width: 768px) {
+            .chatbot-float {
+                bottom: 20px;
+                right: 20px;
+            }
+
+            .chatbot-button {
+                width: 60px;
+                height: 60px;
+            }
+
+            .robot-icon {
+                width: 35px;
+                height: 35px;
+            }
+
+            .chatbot-tooltip {
+                display: none;
+            }
+        }
+    </style>
+</head>
+
+<body class="text-gray-800">
+    <!-- Header Section -->
+    <header class="bg-white/10 backdrop-blur-lg fixed top-0 left-0 right-0 z-50 border-b border-white/20">
+        <div class="container mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <a href="{% url 'home' %}" class="text-2xl font-bold text-white">Society Connect</a>
+
+                <nav class="hidden md:flex items-center space-x-8">
+                    <a href="{% url 'home' %}" class="text-white font-semibold">Home</a>
+                    <a href="{% url 'society_list' %}" class="text-white/80 hover:text-white transition">Societies</a>
+                    <a href="{% url 'events_list' %}" class="text-white/80 hover:text-white transition">Events</a>
+                    <a href="{% url 'about' %}" class="text-white/80 hover:text-white transition">About</a>
+                    <a href="{% url 'chatbot_interface' %}" class="block py-2 text-white/80 hover:text-white">AI chatbot</a>
+                </nav>
+
+                {% if user.is_authenticated %}
+                <div class="relative hidden md:block">
+                    <button id="profile-menu-button" class="flex items-center space-x-2 focus:outline-none">
+                        {% if user.profile.photo %}
+                            <img class="w-10 h-10 rounded-full object-cover border-2 border-white/50" src="{{ user.profile.photo.url }}" alt="Your Photo">
+                        {% else %}
+                            <span class="inline-block h-10 w-10 overflow-hidden rounded-full bg-white/20 backdrop-blur-sm border border-white/30">
+                              <svg class="h-full w-full text-white/70" fill="currentColor" viewBox="0 0 24 24">
+                                <path d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z" />
+                              </svg>
+                            </span>
+                        {% endif %}
+                        <span class="font-semibold text-white">Hi, {{ user.username }}</span>
+                        <svg class="w-4 h-4 text-white/70" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                    </button>
+
+                    <div id="profile-menu" class="hidden absolute right-0 mt-2 w-48 bg-white/95 backdrop-blur-lg rounded-xl shadow-2xl z-20 border border-white/20">
+                        <a href="{% url 'profile' %}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-indigo-500 hover:text-white rounded-t-xl transition">My Profile</a>
+                        <a href="{% url 'logout' %}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-red-500 hover:text-white rounded-b-xl transition">Logout</a>
+                    </div>
+                </div>
+                {% else %}
+                <a href="{% url 'login' %}"
+                    class="hidden md:inline-block bg-white text-purple-600 font-semibold px-6 py-2 rounded-full hover:bg-gray-100 transition shadow-lg">
+                    Login / Register
+                </a>
+                {% endif %}
+
+                <button id="mobile-menu-button" class="md:hidden text-white">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M4 6h16M4 12h16m-7 6h7"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden px-6 pb-4 bg-white/10 backdrop-blur-lg">
+            <a href="{% url 'home' %}" class="block py-2 text-white font-semibold">Home</a>
+            <a href="{% url 'society_list' %}" class="block py-2 text-white/80 hover:text-white">Societies</a>
+            <a href="{% url 'events_list' %}" class="block py-2 text-white/80 hover:text-white">Events</a>
+            <a href="{% url 'about' %}" class="block py-2 text-white/80 hover:text-white">About</a>
+            <a href="{% url 'chatbot_interface' %}" class="block py-2 text-white/80 hover:text-white">AI chatbot</a>
+            <hr class="my-2 border-white/20">
+            {% if user.is_authenticated %}
+                <a href="{% url 'profile' %}" class="block py-2 font-semibold text-white">My Profile</a>
+                <a href="{% url 'logout' %}"
+                    class="block w-full mt-2 bg-red-600 text-white text-center font-semibold px-5 py-2 rounded-full hover:bg-red-700 shadow">Logout</a>
+            {% else %}
+                <a href="{% url 'login' %}"
+                    class="block w-full mt-2 bg-white text-purple-600 text-center font-semibold px-5 py-2 rounded-full hover:bg-gray-100 shadow">
+                    Login / Register
+                </a>
+            {% endif %}
+        </div>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <section class="hero-bg text-white pt-32 pb-20 md:pt-40 md:pb-32 relative overflow-hidden">
+            <div class="floating-orbs"></div>
+            <div class="container mx-auto px-6 text-center relative z-10">
+                <h1
+                    class="text-5xl md:text-8xl font-extrabold leading-tight mb-6 bg-gradient-to-r from-white via-purple-200 to-indigo-200 bg-clip-text text-transparent drop-shadow-lg">
+                    Society Connect
+                </h1>
+                <p class="text-xl md:text-3xl text-white/90 mb-8 max-w-4xl mx-auto leading-relaxed font-medium">
+                    Discover, Connect, and Participate
+                </p>
+                <p class="text-lg md:text-xl text-white/80 mb-12 max-w-3xl mx-auto">
+                    All Societies in One Place - Your gateway to campus communities, events, and opportunities
+                </p>
+
+                <!-- Hero Stats -->
+                <div class="hero-stats mb-12">
+                    <div class="stat-item">
+                        <div class="text-3xl font-bold text-white">{{ societies_count|default:"15+" }}</div>
+                        <div class="text-white/80 text-sm">Active Societies</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="text-3xl font-bold text-white">{{ members_count|default:"500+" }}</div>
+                        <div class="text-white/80 text-sm">Members</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="text-3xl font-bold text-white">{{ events_count|default:"25+" }}</div>
+                        <div class="text-white/80 text-sm">Monthly Events</div>
+                    </div>
+                </div>
+
+                <!-- Enhanced Search Bar -->
+                <div class="max-w-4xl mx-auto">
+                    <div class="relative">
+                        <input type="search" placeholder="Search societies, events, opportunities..."
+                            class="w-full p-6 pl-8 pr-16 text-gray-800 rounded-2xl shadow-2xl focus:outline-none search-glow bg-white/95 backdrop-blur-sm text-lg font-medium pulse-glow">
+                        <button
+                            class="absolute top-1/2 right-6 -translate-y-1/2 bg-gradient-to-r from-purple-600 to-indigo-600 text-white p-4 rounded-xl hover:from-purple-700 hover:to-indigo-700 transition-all duration-300 shadow-lg hover:shadow-purple-500/50">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                            </svg>
+                        </button>
+                    </div>
+
+                    <!-- Quick Action Buttons -->
+                    <div class="flex flex-wrap justify-center gap-4 mt-8">
+                        <a href="{% url 'society_list' %}"
+                            class="bg-white/20 backdrop-blur-sm text-white px-6 py-3 rounded-full hover:bg-white/30 transition duration-300 font-semibold border border-white/30">
+                            Browse Societies
+                        </a>
+                        <a href="{% url 'events_list' %}"
+                            class="bg-white/20 backdrop-blur-sm text-white px-6 py-3 rounded-full hover:bg-white/30 transition duration-300 font-semibold border border-white/30">
+                            Upcoming Events
+                        </a>
+                        <button
+                            class="bg-white/20 backdrop-blur-sm text-white px-6 py-3 rounded-full hover:bg-white/30 transition duration-300 font-semibold border border-white/30">
+                            Join Community
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Content Sections -->
+        <div class="py-20 relative">
+            <div class="container mx-auto px-6 space-y-20">
+
+                <!-- Featured Societies Section -->
+                <section>
+                    <div class="text-center mb-16">
+                        <h2 class="text-4xl md:text-5xl font-bold mb-6 text-white">Featured Societies</h2>
+                        <p class="text-white/80 max-w-3xl mx-auto text-xl">Explore the most active and engaging
+                            communities on campus</p>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                        {% for society in societies %}
+                        <div class="featured-card rounded-2xl shadow-2xl card-hover border border-white/20">
+                            {% if society.is_featured %}
+                                <div class="featured-badge">⭐ Featured</div>
+                            {% endif %}
+                            <div class="p-6 text-center">
+                                {% if society.logo %}
+                                    <div class="w-20 h-20 mx-auto mb-4 rounded-full shadow-lg overflow-hidden">
+                                        <img src="{{ society.logo.url }}" alt="{{ society.name }}" class="w-full h-full object-cover">
+                                    </div>
+                                {% else %}
+                                    <div
+                                        class="w-20 h-20 mx-auto mb-4 bg-gradient-to-br from-purple-500 to-pink-600 rounded-full shadow-lg flex items-center justify-center">
+                                        <span class="text-white font-bold text-2xl">{{ society.name|first|upper }}</span>
+                                    </div>
+                                {% endif %}
+                                <h3 class="text-xl font-bold mb-3 text-gray-900">{{ society.name }}</h3>
+                                <p class="text-gray-600 mb-4 text-sm leading-relaxed">{{ society.card_description|default:"Join our amazing community and discover new opportunities."|truncatewords:15 }}</p>
+                                <div class="flex justify-between items-center text-xs text-gray-500 mb-4">
+                                    <span>{{ society.members_count|default:"0" }}+ Members</span>
+                                    <span>{{ society.category|default:"Society" }}</span>
+                                </div>
+                                <a href="{% url 'society_detail' society.slug %}"
+                                    class="inline-flex items-center font-semibold text-purple-600 hover:text-purple-800 transition-colors group">
+                                    Learn More
+                                    <svg class="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" fill="none"
+                                        stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M9 5l7 7-7 7"></path>
+                                    </svg>
+                                </a>
+                            </div>
+                        </div>
+                        {% empty %}
+                        <!-- Fallback content if no societies exist -->
+                        <div class="col-span-full text-center text-white/80">
+                            <p>No societies available at the moment. Check back soon!</p>
+                        </div>
+                        {% endfor %}
+                    </div>
+
+                    <div class="text-center mt-12">
+                        <a href="{% url 'society_list' %}"
+                            class="inline-block bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-bold px-8 py-4 rounded-2xl hover:from-purple-700 hover:to-indigo-700 transition-all duration-300 shadow-lg hover:shadow-purple-500/50 text-lg">
+                            Explore All Societies
+                        </a>
+                    </div>
+                </section>
+
+                <!-- Events and Recruitment Section -->
+                <section class="grid grid-cols-1 lg:grid-cols-3 gap-12 items-start">
+                    <!-- Upcoming Events -->
+                    <div class="lg:col-span-2">
+                        <div class="text-center lg:text-left mb-10">
+                            <h2 class="text-4xl md:text-5xl font-bold mb-4 text-white">Upcoming Events</h2>
+                            <p class="text-white/80 text-xl">Don't miss out on these exciting opportunities</p>
+                        </div>
+
+                        <div class="space-y-6">
+                            {% for event in events %}
+                            <div class="event-card p-6 rounded-2xl shadow-2xl flex items-center space-x-6 card-hover">
+                                <div
+                                    class="bg-gradient-to-br from-blue-500 to-indigo-600 text-white p-4 rounded-2xl text-center min-w-[80px] shadow-lg">
+                                    <p class="text-sm font-semibold">{{ event.date|date:"M"|upper }}</p>
+                                    <p class="text-2xl font-bold">{{ event.date|date:"d" }}</p>
+                                </div>
+                                <div class="flex-1">
+                                    <h3 class="text-xl font-bold text-gray-900">{{ event.title }}</h3>
+                                    <p class="text-gray-600">Hosted by {{ event.society.name }}</p>
+                                    <p class="text-sm text-gray-500 mt-1">
+                                        {% if event.time %}{{ event.time|time:"g:i A" }} | {% endif %}{{ event.location|default:"TBA" }}
+                                    </p>
+                                </div>
+                                <div class="text-right">
+                                    <button
+                                        class="bg-gradient-to-r from-purple-600 to-indigo-600 text-white px-6 py-3 rounded-xl hover:from-purple-700 hover:to-indigo-700 transition font-semibold shadow-lg hover:shadow-purple-500/50">
+                                        Register
+                                    </button>
+                                </div>
+                            </div>
+                            {% empty %}
+                            <div class="event-card p-6 rounded-2xl shadow-2xl text-center">
+                                <p class="text-gray-600">No upcoming events scheduled at the moment.</p>
+                                <p class="text-sm text-gray-500 mt-2">Check back later for exciting opportunities!</p>
+                            </div>
+                            {% endfor %}
+                        </div>
+
+                        <div class="text-center lg:text-left mt-8">
+                            <a href="{% url 'events_list' %}"
+                                class="inline-block text-white hover:text-yellow-200 font-semibold text-lg transition-colors">
+                                View All Events →
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Recruitment Notices -->
+                    <div>
+                        <div class="text-center lg:text-left mb-10">
+                            <h2 class="text-4xl md:text-5xl font-bold mb-4 text-white">Open Positions</h2>
+                            <p class="text-white/80 text-xl">Join our growing community</p>
+                        </div>
+
+                        <div class="space-y-6">
+                            {% for recruitment in recruitments %}
+                            <div class="recruitment-card p-6 rounded-2xl shadow-2xl card-hover">
+                                <div class="flex items-start justify-between mb-4">
+                                    <div>
+                                        <h3 class="text-xl font-bold text-gray-900">{{ recruitment.position_title }}</h3>
+                                        <p class="text-gray-600">{{ recruitment.society.name }}</p>
+                                    </div>
+                                    <span
+                                        class="bg-gradient-to-r from-green-500 to-emerald-500 text-white text-xs px-3 py-1 rounded-full font-semibold">{{ recruitment.status|default:"Open" }}</span>
+                                </div>
+                                <p class="text-sm text-gray-600 mb-4 leading-relaxed">{{ recruitment.description|truncatewords:20 }}</p>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-sm font-medium text-red-600">Apply by: {{ recruitment.deadline|date:"M d" }}</span>
+                                    <a href="#"
+                                        class="font-semibold text-purple-600 hover:text-purple-800 text-sm transition-colors">Apply
+                                        Now →</a>
+                                </div>
+                            </div>
+                            {% empty %}
+                            <!-- Fallback recruitment cards -->
+                            <div class="recruitment-card p-6 rounded-2xl shadow-2xl card-hover">
+                                <div class="flex items-start justify-between mb-4">
+                                    <div>
+                                        <h3 class="text-xl font-bold text-gray-900">Content Designer</h3>
+                                        <p class="text-gray-600">Various Societies</p>
+                                    </div>
+                                    <span
+                                        class="bg-gradient-to-r from-green-500 to-emerald-500 text-white text-xs px-3 py-1 rounded-full font-semibold">Open</span>
+                                </div>
+                                <p class="text-sm text-gray-600 mb-4 leading-relaxed">Looking for creative designers for
+                                    our annual magazine and promotional materials.</p>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-sm font-medium text-red-600">Apply by: Sep 28</span>
+                                    <a href="#"
+                                        class="font-semibold text-purple-600 hover:text-purple-800 text-sm transition-colors">Apply
+                                        Now →</a>
+                                </div>
+                            </div>
+
+                            <div class="recruitment-card p-6 rounded-2xl shadow-2xl card-hover">
+                                <div class="flex items-start justify-between mb-4">
+                                    <div>
+                                        <h3 class="text-xl font-bold text-gray-900">Web Developer</h3>
+                                        <p class="text-gray-600">Tech Society</p>
+                                    </div>
+                                    <span
+                                        class="bg-gradient-to-r from-red-500 to-pink-500 text-white text-xs px-3 py-1 rounded-full font-semibold">Urgent</span>
+                                </div>
+                                <p class="text-sm text-gray-600 mb-4 leading-relaxed">Join our team to build and
+                                    maintain our new website and web applications.</p>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-sm font-medium text-red-600">Apply by: Sep 20</span>
+                                    <a href="#"
+                                        class="font-semibold text-purple-600 hover:text-purple-800 text-sm transition-colors">Apply
+                                        Now →</a>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+
+                        <div class="text-center lg:text-left mt-8">
+                            <a href="#"
+                                class="inline-block text-white hover:text-yellow-200 font-semibold text-lg transition-colors">
+                                View All Opportunities →
+                            </a>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Call to Action Section -->
+                <section class="text-center py-16 relative">
+                    <div class="max-w-4xl mx-auto">
+                        <h2 class="text-4xl md:text-6xl font-bold mb-6 text-white">Ready to Get Started?</h2>
+                        <p class="text-xl md:text-2xl text-white/80 mb-12 max-w-2xl mx-auto">
+                            Join thousands of students already connecting through Society Connect
+                        </p>
+
+                        <div class="flex flex-col sm:flex-row gap-6 justify-center items-center">
+                            {% if not user.is_authenticated %}
+                            <a href="{% url 'login' %}"
+                                class="bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-bold px-10 py-4 rounded-2xl hover:from-purple-700 hover:to-indigo-700 transition-all duration-300 shadow-2xl hover:shadow-purple-500/50 text-lg min-w-[200px]">
+                                Join Now
+                            </a>
+                            {% else %}
+                            <a href="{% url 'society_list' %}"
+                                class="bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-bold px-10 py-4 rounded-2xl hover:from-purple-700 hover:to-indigo-700 transition-all duration-300 shadow-2xl hover:shadow-purple-500/50 text-lg min-w-[200px]">
+                                Explore Societies
+                            </a>
+                            {% endif %}
+                            <a href="{% url 'about' %}"
+                                class="bg-white/20 backdrop-blur-sm text-white font-bold px-10 py-4 rounded-2xl hover:bg-white/30 transition-all duration-300 border-2 border-white/30 text-lg min-w-[200px]">
+                                Learn More
+                            </a>
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+        </div>
+    </main>
+
+    <!-- AI Chatbot Floating Button -->
+    <div class="chatbot-float">
+        <div class="chatbot-tooltip">Need help? Chat with AI! 🤖</div>
+        <a href="{% url 'chatbot_interface' %}" class="chatbot-button">
+            <!-- Robot SVG Icon with Waving Hand -->
+            <svg class="robot-icon" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <!-- Robot Head -->
+                <rect x="16" y="20" width="32" height="28" rx="4" fill="white" stroke="white" stroke-width="2"/>
+                
+                <!-- Eyes -->
+                <circle cx="26" cy="32" r="3" fill="#667eea"/>
+                <circle cx="38" cy="32" r="3" fill="#667eea"/>
+                
+                <!-- Antenna -->
+                <line x1="32" y1="20" x2="32" y2="14" stroke="white" stroke-width="2" stroke-linecap="round"/>
+                <circle cx="32" cy="12" r="2" fill="#fbbf24"/>
+                
+                <!-- Mouth -->
+                <path d="M 26 40 Q 32 44 38 40" stroke="#667eea" stroke-width="2" stroke-linecap="round" fill="none"/>
+                
+                <!-- Body -->
+                <rect x="22" y="48" width="20" height="8" rx="2" fill="white" stroke="white" stroke-width="2"/>
+                
+                <!-- Arms -->
+                <rect x="10" y="30" width="6" height="16" rx="3" fill="white" stroke="white" stroke-width="2"/>
+                <rect x="48" y="30" width="6" height="16" rx="3" fill="white" stroke="white" stroke-width="2"/>
+                
+                <!-- Waving Hand (Right Arm) -->
+                <g class="robot-wave">
+                    <circle cx="51" cy="28" r="4" fill="white" stroke="white" stroke-width="2"/>
+                    <path d="M 50 24 L 48 20 M 52 24 L 54 20 M 51 23 L 51 18" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+                </g>
+            </svg>
+            <!-- Optional: Notification Badge -->
+            <!-- <div class="chatbot-badge"></div> -->
+        </a>
+    </div>
+
+    <!-- Footer Section -->
+    <footer class="bg-black/20 backdrop-blur-lg text-white border-t border-white/10">
+        <div class="container mx-auto px-6 py-16">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-12">
+                <!-- Logo + Social -->
+                <div>
+                    <div class="mb-6">
+                        <div
+                            class="w-16 h-16 rounded-full bg-gradient-to-r from-purple-600 to-indigo-600 flex items-center justify-center shadow-2xl">
+                            <span class="text-white font-bold text-xl">SC</span>
+                        </div>
+                    </div>
+                    <p class="text-white/70 mb-6">Connect with our vibrant community</p>
+
+                    <!-- Social Icons -->
+                    <div class="flex space-x-6">
+                        <a href="#"
+                            class="hover:text-purple-300 w-10 h-10 flex items-center justify-center bg-white/10 rounded-full backdrop-blur-sm transition duration-300 hover:bg-white/20">
+                            <svg fill="currentColor" viewBox="0 0 24 24" width="20" height="20">
+                                <path
+                                    d="M7 2C4.238 2 2 4.238 2 7v10c0 2.762 2.238 5 5 5h10c2.762 0 5-2.238 5-5V7c0-2.762-2.238-5-5-5H7zm10 2c1.654 0 3 1.346 3 3v10c0 1.654-1.346 3-3 3H7c-1.654 0-3-1.346-3-3V7c0-1.654 1.346-3 3-3h10zm-5 3a5 5 0 1 0 0 10 5 5 0 0 0 0-10zm0 2a3 3 0 1 1 .001 6.001A3 3 0 0 1 12 9zm5-1.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z" />
+                            </svg>
+                        </a>
+                        <a href="#"
+                            class="hover:text-purple-300 w-10 h-10 flex items-center justify-center bg-white/10 rounded-full backdrop-blur-sm transition duration-300 hover:bg-white/20">
+                            <svg fill="currentColor" viewBox="0 0 24 24" width="20" height="20">
+                                <path
+                                    d="M23.498 6.186a2.926 2.926 0 0 0-2.057-2.063C19.221 3.667 12.002 3.667 12.002 3.667c0 0-7.219 0-9.439.456A2.926 2.926 0 0 0 .506 6.186C.051 8.406.051 12.003.051 12.003s0 3.597.455 5.817a2.926 2.926 0 0 0 2.057 2.063c2.20.455 9.439.455 9.439.455s7.219 0 9.439-.455a2.926 2.926 0 0 0 2.057-2.063c.455-2.22.455-5.817.455-5.817s0-3.597-.455-5.817zM9.969 15.09V8.915l6.243 3.088-6.243 3.087z" />
+                            </svg>
+                        </a>
+                        <a href="#"
+                            class="hover:text-purple-300 w-10 h-10 flex items-center justify-center bg-white/10 rounded-full backdrop-blur-sm transition duration-300 hover:bg-white/20">
+                            <svg fill="currentColor" viewBox="0 0 24 24" width="20" height="20">
+                                <path
+                                    d="M22.162 5.656c-.793.352-1.631.588-2.527.695a4.343 4.343 0 0 0 1.889-2.393 8.48 8.48 0 0 1-2.73 1.043 4.296 4.296 0 0 0-7.32 3.919A12.202 12.202 0 0 1 3.113 4.92a4.297 4.297 0 0 0 1.331 5.733c-.646-.021-1.254-.199-1.786-.495v.05c0 2.084 1.486 3.822 3.454 4.217-.362.099-.743.151-1.138.151-.278 0-.547-.027-.81-.077.548 1.71 2.139 2.957 4.022 2.989a8.616 8.616 0 0 1-5.338 1.84c-.347 0-.692-.02-1.03-.06a12.21 12.21 0 0 0 6.576 1.927c7.89 0 12.214-6.54 12.214-12.214 0-.186-.004-.37-.012-.553a8.753 8.753 0 0 0 2.154-2.236z" />
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Quick Links -->
+                <div>
+                    <h3 class="text-lg font-semibold mb-6 text-white">Quick Links</h3>
+                    <ul class="space-y-4">
+                        <li><a href="{% url 'home' %}" class="text-white/70 hover:text-white transition duration-300">Home</a></li>
+                        <li><a href="{% url 'society_list' %}" class="text-white/70 hover:text-white transition duration-300">All Societies</a>
+                        </li>
+                        <li><a href="{% url 'events_list' %}" class="text-white/70 hover:text-white transition duration-300">Events
+                                Calendar</a></li>
+                        <li><a href="{% url 'about' %}" class="text-white/70 hover:text-white transition duration-300">About Us</a></li>
+                    </ul>
+                </div>
+
+                <!-- Categories -->
+                <div>
+                    <h3 class="text-lg font-semibold mb-6 text-white">Popular Categories</h3>
+                    <ul class="space-y-4">
+                        <li><a href="#" class="text-white/70 hover:text-white transition duration-300">Technical
+                                Societies</a></li>
+                        <li><a href="#" class="text-white/70 hover:text-white transition duration-300">Cultural
+                                Groups</a></li>
+                        <li><a href="#" class="text-white/70 hover:text-white transition duration-300">Service
+                                Organizations</a></li>
+                        <li><a href="#" class="text-white/70 hover:text-white transition duration-300">Sports &
+                                Gaming</a></li>
+                    </ul>
+                </div>
+
+                <!-- Contact Info -->
+                <div>
+                    <h3 class="text-lg font-semibold mb-6 text-white">Get In Touch</h3>
+                    <div class="space-y-4 text-white/70">
+                        <div>
+                            <p class="font-semibold text-white">+91 XXXXXXXXXX</p>
+                            <p class="text-sm">Mon - Fri: 9am - 6pm</p>
+                        </div>
+                        <p>societyconnect@college.edu</p>
+                        <p>ARSD College Campus,<br>New Delhi, 110021</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bottom Line -->
+        <div class="border-t border-white/10">
+            <div class="container mx-auto px-6 py-6 text-center">
+                <p class="text-white/70">
+                    &copy; 2025 Society Connect. All Rights Reserved.
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript for interactions -->
+    <script>
+        // Header scroll effect
+        const header = document.querySelector('header');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 10) {
+                header.classList.add('bg-white/20');
+                header.classList.remove('bg-white/10');
+            } else {
+                header.classList.add('bg-white/10');
+                header.classList.remove('bg-white/20');
+            }
+        });
+
+        // Mobile menu toggle
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Profile menu toggle
+        const profileMenuButton = document.getElementById('profile-menu-button');
+        const profileMenu = document.getElementById('profile-menu');
+
+        if (profileMenuButton) {
+            profileMenuButton.addEventListener('click', () => {
+                profileMenu.classList.toggle('hidden');
+            });
+
+            // Close the dropdown if the user clicks outside of it
+            window.addEventListener('click', (event) => {
+                if (!profileMenuButton.contains(event.target) && !profileMenu.contains(event.target)) {
+                    profileMenu.classList.add('hidden');
+                }
+            });
+        }
+
+        // Enhanced search functionality
+        const searchInput = document.querySelector('input[type="search"]');
+        searchInput.addEventListener('input', (e) => {
+            // Add search suggestions or filtering logic here
+            console.log('Searching for:', e.target.value);
+        });
+
+        // Card hover effects
+        const cards = document.querySelectorAll('.card-hover');
+        cards.forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                card.style.transform = 'translateY(-8px) scale(1.02)';
+            });
+
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'translateY(0) scale(1)';
+            });
+        });
+
+        // Quick action buttons
+        const quickButtons = document.querySelectorAll('button[class*="bg-white/20"]');
+        quickButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                // Add navigation logic based on button text
+                console.log('Quick action:', button.textContent.trim());
+            });
+        });
+
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Add fade-in animation for cards
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // Observe all cards for animation
+        document.querySelectorAll('.featured-card, .event-card, .recruitment-card').forEach(card => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(20px)';
+            card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(card);
+        });
+
+        // Enhanced typing effect for hero title (optional)
+        const heroTitle = document.querySelector('h1');
+        const originalText = heroTitle.textContent;
+        let isTyping = false;
+
+        function typeEffect() {
+            if (isTyping) return;
+            isTyping = true;
+
+            let i = 0;
+            heroTitle.textContent = '';
+
+            const timer = setInterval(() => {
+                if (i < originalText.length) {
+                    heroTitle.textContent += originalText.charAt(i);
+                    i++;
+                } else {
+                    clearInterval(timer);
+                    isTyping = false;
+                }
+            }, 100);
+        }
+
+        // Trigger typing effect when page loads
+        window.addEventListener('load', () => {
+            setTimeout(typeEffect, 500);
+        });
+    </script>
+
+</body>
+
+</html>

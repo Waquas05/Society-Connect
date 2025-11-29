@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us - Society Connect</title>
+
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 25%, #374151 50%, #4c1d95 75%, #7c2d12 100%);
+            min-height: 100vh;
+        }
+
+        .hero-bg {
+            background: linear-gradient(135deg, rgba(15, 23, 42, 0.9) 0%, rgba(30, 41, 59, 0.8) 25%, rgba(55, 65, 81, 0.8) 50%, rgba(76, 29, 149, 0.8) 75%, rgba(124, 45, 18, 0.9) 100%),
+                url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="hexagon" width="30" height="30" patternUnits="userSpaceOnUse"><polygon points="15,2 25,8 25,22 15,28 5,22 5,8" fill="none" stroke="white" stroke-width="0.5" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23hexagon)"/></svg>');
+        }
+
+        .card-hover {
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transform: translateZ(0);
+        }
+
+        .card-hover:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+        }
+
+        .about-card {
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(20px);
+            background: rgba(255, 255, 255, 0.95);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .about-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #0f172a, #1e293b, #374151, #4c1d95, #7c2d12);
+            background-size: 200% 100%;
+            animation: gradient 4s ease infinite;
+        }
+
+        .mission-card {
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(15px);
+            background: rgba(255, 255, 255, 0.9);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .team-card {
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(15px);
+            background: rgba(255, 255, 255, 0.95);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        @keyframes gradient {
+            0%, 100% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+        }
+
+        .floating-shapes {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            pointer-events: none;
+        }
+
+        .floating-shapes::before,
+        .floating-shapes::after {
+            content: '';
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            animation: float 25s infinite ease-in-out;
+        }
+
+        .floating-shapes::before {
+            width: 400px;
+            height: 400px;
+            top: -200px;
+            left: -150px;
+            animation-delay: 0s;
+        }
+
+        .floating-shapes::after {
+            width: 250px;
+            height: 250px;
+            bottom: -125px;
+            right: -100px;
+            animation-delay: -12s;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0px) rotate(0deg);
+                opacity: 0.6;
+            }
+            33% {
+                transform: translateY(-50px) rotate(120deg);
+                opacity: 1;
+            }
+            66% {
+                transform: translateY(30px) rotate(240deg);
+                opacity: 0.4;
+            }
+        }
+
+        .feature-icon {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            width: 80px;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+            margin: 0 auto 1.5rem;
+        }
+
+        .stats-card {
+            backdrop-filter: blur(15px);
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        header {
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .timeline-line {
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(to bottom, #667eea, #764ba2);
+            transform: translateX(-50%);
+        }
+
+        .timeline-dot {
+            position: absolute;
+            left: 50%;
+            width: 16px;
+            height: 16px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 50%;
+            transform: translateX(-50%);
+            box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.8);
+        }
+    </style>
+</head>
+
+<body class="text-gray-800">
+    <!-- Header Section -->
+    <header class="bg-white/10 backdrop-blur-lg fixed top-0 left-0 right-0 z-50 border-b border-white/20">
+        <div class="container mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <a href="index1.html" class="text-2xl font-bold text-white">Society Connect</a>
+
+                <nav class="hidden md:flex items-center space-x-8">
+                    <a href="index1.html" class="text-white/80 hover:text-white transition">Home</a>
+                    <a href="societies.html" class="text-white/80 hover:text-white transition">Societies</a>
+                    <a href="events.html" class="text-white/80 hover:text-white transition">Events</a>
+                    <a href="about.html" class="text-white font-semibold">About</a>
+                </nav>
+
+                <a href="#"
+                    class="hidden md:inline-block bg-white text-purple-600 font-semibold px-6 py-2 rounded-full hover:bg-gray-100 transition shadow-lg">
+                    Login / Register
+                </a>
+
+                <button class="md:hidden text-white">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M4 6h16M4 12h16m-7 6h7"></path>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <section class="hero-bg text-white pt-32 pb-20 md:pt-40 md:pb-24 relative overflow-hidden">
+            <div class="floating-shapes"></div>
+            <div class="container mx-auto px-6 text-center relative z-10">
+                <h1
+                    class="text-5xl md:text-7xl font-extrabold leading-tight mb-6 bg-gradient-to-r from-white via-blue-200 to-purple-200 bg-clip-text text-transparent">
+                    About Society Connect
+                </h1>
+                <p class="text-xl md:text-2xl text-white/90 mb-12 max-w-4xl mx-auto leading-relaxed">
+                    Empowering students to connect, collaborate, and create lasting impact through vibrant campus communities
+                </p>
+
+                <!-- Hero Stats -->
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto">
+                    <div class="stats-card p-6 rounded-2xl text-center">
+                        <div class="text-3xl font-bold text-white mb-2">15+</div>
+                        <div class="text-white/80 text-sm">Active Societies</div>
+                    </div>
+                    <div class="stats-card p-6 rounded-2xl text-center">
+                        <div class="text-3xl font-bold text-white mb-2">500+</div>
+                        <div class="text-white/80 text-sm">Connected Students</div>
+                    </div>
+                    <div class="stats-card p-6 rounded-2xl text-center">
+                        <div class="text-3xl font-bold text-white mb-2">100+</div>
+                        <div class="text-white/80 text-sm">Events Organized</div>
+                    </div>
+                    <div class="stats-card p-6 rounded-2xl text-center">
+                        <div class="text-3xl font-bold text-white mb-2">3</div>
+                        <div class="text-white/80 text-sm">Years Running</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Content Sections -->
+        <div class="py-20 relative">
+            <div class="container mx-auto px-6 space-y-20">
+
+                <!-- Who We Are Section -->
+                <section>
+                    <div class="text-center mb-16">
+                        <h2 class="text-4xl md:text-5xl font-bold mb-6 text-white">Who We Are</h2>
+                        <p class="text-white/80 max-w-3xl mx-auto text-xl">The bridge between students and campus life</p>
+                    </div>
+
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                        <div class="about-card rounded-2xl shadow-2xl card-hover p-8">
+                            <div class="space-y-6">
+                                <div class="feature-icon">
+                                    <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                                    </svg>
+                                </div>
+                                <h3 class="text-2xl font-bold text-gray-900 mb-4">Student-Driven Platform</h3>
+                                <p class="text-gray-600 leading-relaxed text-lg">
+                                    Society Connect is more than just a platform - it's a community-driven initiative created by students, for students. We understand the challenges of campus life because we live it every day.
+                                </p>
+                                <p class="text-gray-600 leading-relaxed">
+                                    Founded in 2022 at ARSD College, our mission began with a simple observation: students needed a centralized way to discover and engage with the vibrant society culture on campus.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="about-card rounded-2xl shadow-2xl card-hover p-8">
+                            <div class="space-y-6">
+                                <div class="feature-icon">
+                                    <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
+                                    </svg>
+                                </div>
+                                <h3 class="text-2xl font-bold text-gray-900 mb-4">Innovation at Heart</h3>
+                                <p class="text-gray-600 leading-relaxed text-lg">
+                                    We leverage technology to solve real campus problems. Our platform combines modern web development with intuitive design to create seamless experiences.
+                                </p>
+                                <p class="text-gray-600 leading-relaxed">
+                                    From event discovery to society recruitment, we're constantly innovating to make campus engagement more accessible and meaningful for everyone.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Our Mission Section -->
+                <section>
+                    <div class="text-center mb-16">
+                        <h2 class="text-4xl md:text-5xl font-bold mb-6 text-white">Our Mission</h2>
+                        <p class="text-white/80 max-w-3xl mx-auto text-xl">Connecting every student to their perfect campus community</p>
+                    </div>
+
+                    <div class="mission-card rounded-2xl shadow-2xl p-12 text-center max-w-4xl mx-auto card-hover">
+                        <div class="space-y-8">
+                            <div class="w-24 h-24 mx-auto bg-gradient-to-br from-purple-600 to-pink-600 rounded-full flex items-center justify-center shadow-2xl">
+                                <svg class="w-12 h-12 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                                </svg>
+                            </div>
+                            <h3 class="text-3xl font-bold text-gray-900">Fostering Connections That Last</h3>
+                            <p class="text-xl text-gray-600 leading-relaxed max-w-3xl mx-auto">
+                                Our mission is to bridge the gap between students and societies, creating meaningful connections that extend far beyond college years. We believe every student deserves to find their tribe, explore their passions, and contribute to something bigger than themselves.
+                            </p>
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mt-12">
+                                <div class="text-center">
+                                    <div class="text-2xl font-bold text-purple-600 mb-2">Connect</div>
+                                    <p class="text-gray-600">Link students with like-minded communities and opportunities</p>
+                                </div>
+                                <div class="text-center">
+                                    <div class="text-2xl font-bold text-purple-600 mb-2">Engage</div>
+                                    <p class="text-gray-600">Facilitate active participation in campus life and events</p>
+                                </div>
+                                <div class="text-center">
+                                    <div class="text-2xl font-bold text-purple-600 mb-2">Grow</div>
+                                    <p class="text-gray-600">Support personal and professional development through societies</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- What We Offer Section -->
+                <section>
+                    <div class="text-center mb-16">
+                        <h2 class="text-4xl md:text-5xl font-bold mb-6 text-white">What We Offer</h2>
+                        <p class="text-white/80 max-w-3xl mx-auto text-xl">Comprehensive solutions for campus community engagement</p>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                        <!-- Feature 1 -->
+                        <div class="about-card rounded-2xl shadow-2xl p-8 text-center card-hover">
+                            <div class="feature-icon">
+                                <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+                                </svg>
+                            </div>
+                            <h3 class="text-xl font-bold text-gray-900 mb-4">Society Discovery</h3>
+                            <p class="text-gray-600 leading-relaxed">
+                                Easily browse and discover societies that match your interests, from technical clubs to cultural groups and everything in between.
+                            </p>
+                        </div>
+
+                        <!-- Feature 2 -->
+                        <div class="about-card rounded-2xl shadow-2xl p-8 text-center card-hover">
+                            <div class="feature-icon">
+                                <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                                </svg>
+                            </div>
+                            <h3 class="text-xl font-bold text-gray-900 mb-4">Event Management</h3>
+                            <p class="text-gray-600 leading-relaxed">
+                                Stay updated with upcoming events, workshops, competitions, and cultural programs. Never miss an opportunity to participate.
+                            </p>
+                        </div>
+
+                        <!-- Feature 3 -->
+                        <div class="about-card rounded-2xl shadow-2xl p-8 text-center card-hover">
+                            <div class="feature-icon">
+                                <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z"></path>
+                                </svg>
+                            </div>
+                            <h3 class="text-xl font-bold text-gray-900 mb-4">Recruitment Hub</h3>
+                            <p class="text-gray-600 leading-relaxed">
+                                Find open positions and opportunities within societies. Apply for roles that match your skills and interests.
+                            </p>
+                        </div>
+
+                        <!-- Feature 4 -->
+                        <div class="about-card rounded-2xl shadow-2xl p-8 text-center card-hover">
+                            <div class="feature-icon">
+                                <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M17 8h2a2 2 0 012 2v6a2 2 0 01-2 2h-2v4l-4-4H9a1.994 1.994 0 01-1.414-.586m0 0L11 14h4a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2v4l.586-.586z"></path>
+                                </svg>
+                            </div>
+                            <h3 class="text-xl font-bold text-gray-900 mb-4">Community Building</h3>
+                            <p class="text-gray-600 leading-relaxed">
+                                Connect with like-minded peers, build lasting friendships, and create networks that extend beyond college years.
+                            </p>
+                        </div>
+
+                        <!-- Feature 5 -->
+                        <div class="about-card rounded-2xl shadow-2xl p-8 text-center card-hover">
+                            <div class="feature-icon">
+                                <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+                                </svg>
+                            </div>
+                            <h3 class="text-xl font-bold text-gray-900 mb-4">Analytics & Insights</h3>
+                            <p class="text-gray-600 leading-relaxed">
+                                Track engagement, measure impact, and gain insights to help societies grow and improve their outreach.
+                            </p>
+                        </div>
+
+                        <!-- Feature 6 -->
+                        <div class="about-card rounded-2xl shadow-2xl p-8 text-center card-hover">
+                            <div class="feature-icon">
+                                <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"></path>
+                                </svg>
+                            </div>
+                            <h3 class="text-xl font-bold text-gray-900 mb-4">Mobile Experience</h3>
+                            <p class="text-gray-600 leading-relaxed">
+                                Access everything on-the-go with our responsive design, optimized for all devices and screen sizes.
+                            </p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Our Team Section -->
+                <section>
+                    <div class="text-center mb-16">
+                        <h2 class="text-4xl md:text-5xl font-bold mb-6 text-white">Meet Our Team</h2>
+                        <p class="text-white/80 max-w-3xl mx-auto text-xl">The passionate individuals behind Society Connect</p>
+                    </div>
+
+                    <div class="max-w-6xl mx-auto">
+                        <!-- Team Photo Placeholder -->
+                        <div class="team-card rounded-2xl shadow-2xl p-8 mb-12 card-hover">
+                            <div class="aspect-video bg-gradient-to-br from-gray-100 to-gray-200 rounded-xl flex items-center justify-center mb-8 overflow-hidden">
+                                <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80" 
+                                     alt="Society Connect Team" 
+                                     class="w-full h-full object-cover">
+                            </div>
+                            <div class="text-center">
+                                <h3 class="text-2xl font-bold text-gray-900 mb-4">The Society Connect Team</h3>
+                                <p class="text-gray-600 leading-relaxed max-w-3xl mx-auto">
+                                    A diverse group of students from various backgrounds, united by our passion for building better campus communities. From developers and designers to community managers and content creators, each team member brings unique skills and perspectives to make Society Connect the best it can be.
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Team Values -->
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                            <div class="team-card rounded-2xl shadow-2xl p-6 text-center card-hover">
+                                <div class="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
+                                    <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+                                    </svg>
+                                </div>
+                                <h4 class="text-xl font-bold text-gray-900 mb-3">Innovation</h4>
+                                <p class="text-gray-600 text-sm">
+                                    We're constantly exploring new technologies and approaches to solve campus challenges.
+                                </p>
+                            </div>
+
+                            <div class="team-card rounded-2xl shadow-2xl p-6 text-center card-hover">
+                                <div class="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-green-500 to-teal-600 rounded-full flex items-center justify-center">
+                                    <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+                                    </svg>
+                                </div>
+                                <h4 class="text-xl font-bold text-gray-900 mb-3">Community First</h4>
+                                <p class="text-gray-600 text-sm">
+                                    Every decision we make is guided by what's best for our student community.
+                                </p>
+                            </div>
+
+                            <div class="team-card rounded-2xl shadow-2xl p-6 text-center card-hover">
+                                <div class="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-orange-500 to-red-600 rounded-full flex items-center justify-center">
+                                    <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                    </svg>
+                                </div>
+                                <h4 class="text-xl font-bold text-gray-900 mb-3">Excellence</h4>
+                                <p class="text-gray-600 text-sm">
+                                    We strive for the highest standards in everything we build and deliver.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Our Journey/Timeline Section -->
+                <section>
+                    <div class="text-center mb-16">
+                        <h2 class="text-4xl md:text-5xl font-bold mb-6 text-white">Our Journey</h2>
+                        <p class="text-white/80 max-w-3xl mx-auto text-xl">From idea to impact - how we got here</p>
+                    </div>
+
+                    <div class="max-w-4xl mx-auto">
+                        <div class="relative">
+                            <div class="timeline-line"></div>
+                            
+                            <!-- Timeline Item 1 -->
+                            <div class="relative mb-16">
+                                <div class="timeline-dot" style="top: 2rem;"></div>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                                    <div class="md:text-right">
+                                        <div class="mission-card rounded-2xl shadow-2xl p-6 card-hover">
+                                            <h3 class="text-xl font-bold text-gray-900 mb-2">The Beginning</h3>
+                                            <p class="text-gray-600 text-sm mb-2">March 2022</p>
+                                            <p class="text-gray-600 leading-relaxed">
+                                                Started as a simple idea to help fellow students discover societies and events more easily. The first version was a basic webpage with society information.
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="hidden md:block"></div>
+                                </div>
+                            </div>
+
+                            <!-- Timeline Item 2 -->
+                            <div class="relative mb-16">
+                                <div class="timeline-dot" style="top: 2rem;"></div>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                                    <div class="hidden md:block"></div>
+                                    <div>
+                                        <div class="mission-card rounded-2xl shadow-2xl p-6 card-hover">
+                                            <h3 class="text-xl font-bold text-gray-900 mb-2">First Launch</h3>
+                                            <p class="text-gray-600 text-sm mb-2">September 2022</p>
+                                            <p class="text-gray-600 leading-relaxed">
+                                                Launched the first full version with event listings, society profiles, and basic search functionality. Gained our first 100 users within the first month.
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Timeline Item 3 -->
+                            <div class="relative mb-16">
+                                <div class="timeline-dot" style="top: 2rem;"></div>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                                    <div class="md:text-right">
+                                        <div class="mission-card rounded-2xl shadow-2xl p-6 card-hover">
+                                            <h3 class="text-xl font-bold text-gray-900 mb-2">Growth Phase</h3>
+                                            <p class="text-gray-600 text-sm mb-2">February 2023</p>
+                                            <p class="text-gray-600 leading-relaxed">
+                                                Added recruitment features, improved UI/UX, and integrated with more societies. Student adoption grew to over 300 active users.
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div class="hidden md:block"></div>
+                                </div>
+                            </div>
+
+                            <!-- Timeline Item 4 -->
+                            <div class="relative">
+                                <div class="timeline-dot" style="top: 2rem;"></div>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                                    <div class="hidden md:block"></div>
+                                    <div>
+                                        <div class="mission-card rounded-2xl shadow-2xl p-6 card-hover">
+                                            <h3 class="text-xl font-bold text-gray-900 mb-2">Current Day</h3>
+                                            <p class="text-gray-600 text-sm mb-2">2025</p>
+                                            <p class="text-gray-600 leading-relaxed">
+                                                Now serving 500+ students across 15+ societies with advanced features, mobile optimization, and plans for expansion to other colleges.
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Contact/Get Involved Section -->
+                <section class="text-center py-16">
+                    <div class="max-w-4xl mx-auto">
+                        <h2 class="text-4xl md:text-6xl font-bold mb-6 text-white">Join Our Mission</h2>
+                        <p class="text-xl md:text-2xl text-white/80 mb-12 max-w-2xl mx-auto">
+                            Help us build the future of campus community engagement
+                        </p>
+
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+                            <div class="mission-card rounded-2xl shadow-2xl p-6 card-hover">
+                                <div class="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
+                                    <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path>
+                                    </svg>
+                                </div>
+                                <h3 class="text-xl font-bold text-gray-900 mb-3">Contribute Code</h3>
+                                <p class="text-gray-600 text-sm">
+                                    Help us build new features and improve the platform. We welcome developers of all skill levels.
+                                </p>
+                            </div>
+
+                            <div class="mission-card rounded-2xl shadow-2xl p-6 card-hover">
+                                <div class="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-green-500 to-teal-600 rounded-full flex items-center justify-center">
+                                    <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z"></path>
+                                    </svg>
+                                </div>
+                                <h3 class="text-xl font-bold text-gray-900 mb-3">Spread the Word</h3>
+                                <p class="text-gray-600 text-sm">
+                                    Help other students discover Society Connect. Share with friends and society leaders.
+                                </p>
+                            </div>
+
+                            <div class="mission-card rounded-2xl shadow-2xl p-6 card-hover">
+                                <div class="w-16 h-16 mx-auto mb-4 bg-gradient-to-br from-orange-500 to-red-600 rounded-full flex items-center justify-center">
+                                    <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
+                                    </svg>
+                                </div>
+                                <h3 class="text-xl font-bold text-gray-900 mb-3">Share Ideas</h3>
+                                <p class="text-gray-600 text-sm">
+                                    Have suggestions for new features? We'd love to hear your ideas and feedback.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="flex flex-col sm:flex-row gap-6 justify-center items-center">
+                            <a href="#"
+                                class="bg-gradient-to-r from-purple-800 to-red-600 text-white font-bold px-10 py-4 rounded-2xl hover:from-purple-900 hover:to-red-700 transition-all duration-300 shadow-2xl text-lg min-w-[200px]">
+                                Get Involved
+                            </a>
+                            <a href="#"
+                                class="bg-white/20 backdrop-blur-sm text-white font-bold px-10 py-4 rounded-2xl hover:bg-white/30 transition-all duration-300 border-2 border-white/30 text-lg min-w-[200px]">
+                                Contact Us
+                            </a>
+                        </div>
+                    </div>
+                </section>
+
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer Section -->
+    <footer class="bg-black/20 backdrop-blur-lg text-white border-t border-white/10">
+        <div class="container mx-auto px-6 py-16">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-12">
+                <!-- Logo + Social -->
+                <div>
+                    <div class="mb-6">
+                        <div
+                            class="w-16 h-16 rounded-full bg-gradient-to-r from-purple-800 to-red-600 flex items-center justify-center shadow-2xl">
+                            <span class="text-white font-bold text-xl">SC</span>
+                        </div>
+                    </div>
+                    <p class="text-white/70 mb-6">Connect with our vibrant community</p>
+
+                    <!-- Social Icons -->
+                    <div class="flex space-x-6">
+                        <a href="#"
+                            class="hover:text-purple-300 w-10 h-10 flex items-center justify-center bg-white/10 rounded-full backdrop-blur-sm transition duration-300 hover:bg-white/20">
+                            <svg fill="currentColor" viewBox="0 0 24 24" width="20" height="20">
+                                <path
+                                    d="M7 2C4.238 2 2 4.238 2 7v10c0 2.762 2.238 5 5 5h10c2.762 0 5-2.238 5-5V7c0-2.762-2.238-5-5-5H7zm10 2c1.654 0 3 1.346 3 3v10c0 1.654-1.346 3-3 3H7c-1.654 0-3-1.346-3-3V7c0-1.654 1.346-3 3-3h10zm-5 3a5 5 0 1 0 0 10 5 5 0 0 0 0-10zm0 2a3 3 0 1 1 .001 6.001A3 3 0 0 1 12 9zm5-1.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0z" />
+                            </svg>
+                        </a>
+                        <a href="#"
+                            class="hover:text-purple-300 w-10 h-10 flex items-center justify-center bg-white/10 rounded-full backdrop-blur-sm transition duration-300 hover:bg-white/20">
+                            <svg fill="currentColor" viewBox="0 0 24 24" width="20" height="20">
+                                <path
+                                    d="M23.498 6.186a2.926 2.926 0 0 0-2.057-2.063C19.221 3.667 12.002 3.667 12.002 3.667c0 0-7.219 0-9.439.456A2.926 2.926 0 0 0 .506 6.186C.051 8.406.051 12.003.051 12.003s0 3.597.455 5.817a2.926 2.926 0 0 0 2.057 2.063c2.22.455 9.439.455 9.439.455s7.219 0 9.439-.455a2.926 2.926 0 0 0 2.057-2.063c.455-2.22.455-5.817.455-5.817s0-3.597-.455-5.817zM9.969 15.09V8.915l6.243 3.088-6.243 3.087z" />
+                            </svg>
+                        </a>
+                        <a href="#"
+                            class="hover:text-purple-300 w-10 h-10 flex items-center justify-center bg-white/10 rounded-full backdrop-blur-sm transition duration-300 hover:bg-white/20">
+                            <svg fill="currentColor" viewBox="0 0 24 24" width="20" height="20">
+                                <path
+                                    d="M22.162 5.656c-.793.352-1.631.588-2.527.695a4.343 4.343 0 0 0 1.889-2.393 8.48 8.48 0 0 1-2.73 1.043 4.296 4.296 0 0 0-7.32 3.919A12.202 12.202 0 0 1 3.113 4.92a4.297 4.297 0 0 0 1.331 5.733c-.646-.021-1.254-.199-1.786-.495v.05c0 2.084 1.486 3.822 3.454 4.217-.362.099-.743.151-1.138.151-.278 0-.547-.027-.81-.077.548 1.71 2.139 2.957 4.022 2.989a8.616 8.616 0 0 1-5.338 1.84c-.347 0-.692-.02-1.03-.06a12.21 12.21 0 0 0 6.576 1.927c7.89 0 12.214-6.54 12.214-12.214 0-.186-.004-.37-.012-.553a8.753 8.753 0 0 0 2.154-2.236z" />
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Quick Links -->
+                <div>
+                    <h3 class="text-lg font-semibold mb-6 text-white">Quick Links</h3>
+                    <ul class="space-y-4">
+                        <li><a href="index1.html" class="text-white/70 hover:text-white transition duration-300">Home</a></li>
+                        <li><a href="societies.html" class="text-white/70 hover:text-white transition duration-300">All Societies</a></li>
+                        <li><a href="events.html" class="text-white/70 hover:text-white transition duration-300">Events Calendar</a></li>
+                        <li><a href="about.html" class="text-white/70 hover:text-white transition duration-300">About Us</a></li>
+                    </ul>
+                </div>
+
+                <!-- Categories -->
+                <div>
+                    <h3 class="text-lg font-semibold mb-6 text-white">Popular Categories</h3>
+                    <ul class="space-y-4">
+                        <li><a href="#" class="text-white/70 hover:text-white transition duration-300">Technical Societies</a></li>
+                        <li><a href="#" class="text-white/70 hover:text-white transition duration-300">Cultural Groups</a></li>
+                        <li><a href="#" class="text-white/70 hover:text-white transition duration-300">Service Organizations</a></li>
+                        <li><a href="#" class="text-white/70 hover:text-white transition duration-300">Sports & Gaming</a></li>
+                    </ul>
+                </div>
+
+                <!-- Contact Info -->
+                <div>
+                    <h3 class="text-lg font-semibold mb-6 text-white">Get In Touch</h3>
+                    <div class="space-y-4 text-white/70">
+                        <div>
+                            <p class="font-semibold text-white">+91 XXXXXXXXXX</p>
+                            <p class="text-sm">Mon - Fri: 9am - 6pm</p>
+                        </div>
+                        <p>societyconnect@college.edu</p>
+                        <p>ARSD College Campus,<br>New Delhi, 110021</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Bottom Line -->
+        <div class="border-t border-white/10">
+            <div class="container mx-auto px-6 py-6 text-center">
+                <p class="text-white/70">
+                    &copy; 2025 Society Connect. All Rights Reserved.
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript for interactions -->
+    <script>
+        // Header scroll effect
+        const header = document.querySelector('header');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 10) {
+                header.classList.add('bg-white/20');
+                header.classList.remove('bg-white/10');
+            } else {
+                header.classList.add('bg-white/10');
+                header.classList.remove('bg-white/20');
+            }
+        });
+
+        // Card hover effects
+        const cards = document.querySelectorAll('.card-hover');
+        cards.forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                card.style.transform = 'translateY(-8px) scale(1.02)';
+            });
+
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = 'translateY(0) scale(1)';
+            });
+        });
+
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Add fade-in animation for cards
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        // Observe all cards for animation
+        document.querySelectorAll('.about-card, .mission-card, .team-card').forEach(card => {
+            card.style.opacity = '0';
+            card.style.transform = 'translateY(20px)';
+            card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(card);
+        });
+
+        // Timeline animation
+        const timelineDots = document.querySelectorAll('.timeline-dot');
+        timelineDots.forEach((dot, index) => {
+            dot.style.opacity = '0';
+            dot.style.transform = 'translateX(-50%) scale(0)';
+            dot.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            
+            setTimeout(() => {
+                observer.observe(dot);
+            }, index * 200);
+        });
+
+        // Enhanced timeline dot animation
+        const timelineObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateX(-50%) scale(1)';
+                }
+            });
+        }, observerOptions);
+
+        timelineDots.forEach(dot => {
+            timelineObserver.observe(dot);
+        });
+
+        // Stats counter animation
+        const statNumbers = document.querySelectorAll('.stats-card .text-3xl');
+        const animateValue = (element, start, end, duration) => {
+            let startTimestamp = null;
+            const step = (timestamp) => {
+                if (!startTimestamp) startTimestamp = timestamp;
+                const progress = Math.min((timestamp - startTimestamp) / duration, 1);
+                const current = Math.floor(progress * (end - start) + start);
+                element.textContent = current + (element.textContent.includes('+') ? '+' : '');
+                if (progress < 1) {
+                    window.requestAnimationFrame(step);
+                }
+            };
+            window.requestAnimationFrame(step);
+        };
+
+        // Trigger stats animation when visible
+        const statsObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const textContent = entry.target.textContent;
+                    const number = parseInt(textContent.replace(/\D/g, ''));
+                    animateValue(entry.target, 0, number, 2000);
+                    statsObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.5 });
+
+        statNumbers.forEach(stat => {
+            statsObserver.observe(stat);
+        });
+    </script>
+
+</body>
+
+</html>
