@@ -80,7 +80,7 @@ def profile_view(request):
 
     return render(request, "app1/profile.html", {"profile": profile, "societies": societies})
 
-@login_required(login_url='/login/')
+
 def apply_page(request, slug):
     society = Society.objects.get(slug=slug)
     return render(request, "app1/application.html", {"society": society})
