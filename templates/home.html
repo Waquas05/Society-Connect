@@ -573,10 +573,14 @@
                             class="bg-white/20 backdrop-blur-sm text-white px-6 py-3 rounded-full hover:bg-white/30 transition duration-300 font-semibold border border-white/30">
                             Upcoming Events
                         </a>
-                        <button
+                        <a href="{% url 'society_list' %}"
+                            class="bg-white/20 backdrop-blur-sm text-white px-6 py-3 rounded-full hover:bg-white/30 transition duration-300 font-semibold border border-white/30">
+                            Join a Society
+                        </a>
+                        {% comment %} <button
                             class="bg-white/20 backdrop-blur-sm text-white px-6 py-3 rounded-full hover:bg-white/30 transition duration-300 font-semibold border border-white/30">
                             Join Community
-                        </button>
+                        </button> {% endcomment %}
                     </div>
                 </div>
             </div>

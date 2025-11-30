@@ -355,16 +355,17 @@
                         <p class="text-enhanced text-lg leading-relaxed mb-12 max-w-4xl mx-auto">{{ society.main_description }}</p>
 
                         <!-- Apply Button -->
-                        <form method="post" action="#" class="fade-in-up stagger-1">
-                            {% csrf_token %}
-                            <button type="submit"
-                                class="btn-gradient text-white-enhanced px-12 py-4 rounded-2xl font-bold text-lg hover:scale-105 transition-all duration-300 shadow-2xl">
-                                <svg class="w-6 h-6 inline mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
-                                </svg>
-                                Apply to Join {{ society.name }}
-                            </button>
-                        </form>
+                        <a href="{% url 'apply' society.slug%}" 
+                        class="btn-gradient text-white-enhanced px-12 py-4 rounded-2xl font-bold text-lg 
+                                hover:scale-105 transition-all duration-300 shadow-2xl fade-in-up stagger-1">
+                            <svg class="w-6 h-6 inline mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                            </svg>
+                            Apply to Join {{ society.name }}
+                        </a>
+
+
                     </div>
                 </div>
             </div>

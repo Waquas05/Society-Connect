@@ -136,7 +136,6 @@ LOGOUT_REDIRECT_URL = '/login/'
 
 
 #AI chatbot
-
 from dotenv import load_dotenv
 load_dotenv()
 

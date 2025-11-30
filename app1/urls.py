@@ -13,5 +13,6 @@ urlpatterns = [
     path("events/", views.events_list, name="events_list"),
     path("about/", views.about_view, name="about"),
     path("societies/<slug:slug>/", views.society_detail, name="society_detail"),
-    path("profile/", views.profile_view, name="profile")
+    path("profile/", views.profile_view, name="profile"),
+    path("apply/<slug:slug>/", views.apply_page, name="apply"),
 ]
