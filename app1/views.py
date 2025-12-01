@@ -8,6 +8,7 @@ from .models import Society, Event, Profile, Heads
 import google.generativeai as genai
 from django.http import JsonResponse
 from django.conf import settings
+from django.db.models import Count
 
 def register_view(request):
     if request.method == "POST":
@@ -50,7 +51,8 @@ def logout_view(request):
     return redirect("home")
 
 def society_list(request):
-    societies = Society.objects.all()
+    # societies = Society.objects.all()
+    societies = Society.objects.annotate(member_count=Count("core_members"))
     return render(request, "app1/society_list.html", {"societies": societies})
 
 def events_list(request):
